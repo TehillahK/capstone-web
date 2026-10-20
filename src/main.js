@@ -22,6 +22,16 @@ const formatEventDate = (timestamp) =>
     minute: '2-digit'
   }).format(new Date(timestamp));
 
+const eventDateParts = (timestamp) => {
+  const date = new Date(timestamp);
+  return {
+    day: new Intl.DateTimeFormat(undefined, { day: '2-digit' }).format(date),
+    month: new Intl.DateTimeFormat(undefined, { month: 'short' }).format(date).toUpperCase(),
+    weekday: new Intl.DateTimeFormat(undefined, { weekday: 'short' }).format(date).toUpperCase(),
+    time: new Intl.DateTimeFormat(undefined, { hour: 'numeric', minute: '2-digit' }).format(date)
+  };
+};
+
 const escapeHtml = (value = '') =>
   String(value).replace(/[&<>"']/g, (character) => ({
     '&': '&amp;',
@@ -32,27 +42,34 @@ const escapeHtml = (value = '') =>
   })[character]);
 
 const eventCard = (event, index) => {
+  const dateParts = eventDateParts(event.when);
   const image = event.photoUrl
-    ? `<img src="${escapeHtml(event.photoUrl)}" alt="" class="h-full w-full object-cover" loading="lazy" />`
-    : `<div class="grid h-full min-h-52 place-items-center bg-secondary text-secondary-content">
-        <svg viewBox="0 0 24 24" class="size-14 opacity-80" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
-          <path d="M8 2v4M16 2v4M3 10h18M5 4h14a2 2 0 0 1 2 2v13a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2Z" />
-          <path d="M8 14h2M14 14h2M8 18h2" />
+    ? `<img src="${escapeHtml(event.photoUrl)}" alt="" class="event-card__image h-full w-full object-cover" loading="lazy" />`
+    : `<div class="grid h-full min-h-28 place-items-center bg-secondary text-secondary-content">
+        <svg viewBox="0 0 24 24" class="size-12 opacity-80" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+          <path d="m4 16 5-5 3 3 3-4 5 6" />
+          <path d="M4 5h16v14H4zM8 9h.01" />
         </svg>
       </div>`;
 
   return `
-    <article class="card event-card overflow-hidden border border-base-300 bg-base-100 shadow-sm hover:shadow-xl">
-      <figure class="h-52">${image}</figure>
-      <div class="card-body gap-3 p-6">
-        <div class="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-secondary">
-          <svg viewBox="0 0 24 24" class="size-4" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-            <path d="M8 2v4M16 2v4M3 10h18M5 4h14a2 2 0 0 1 2 2v13a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2Z" />
-          </svg>
-          ${escapeHtml(formatEventDate(event.when))}
+    <article class="event-card card reveal-card overflow-hidden rounded-none border-2 border-neutral bg-base-100 shadow-[6px_6px_0_0] shadow-primary/60" style="--reveal-delay: ${Math.min(index, 8) * 55}ms">
+      <figure class="h-28 border-b-2 border-neutral">${image}</figure>
+      <div class="card-body gap-4 p-5">
+        <div class="flex gap-4">
+          <div class="event-card__date min-w-16 pr-4 text-center">
+            <p class="text-xs font-extrabold tracking-widest text-secondary">${dateParts.weekday}</p>
+            <p class="font-display text-5xl leading-none text-primary">${dateParts.day}</p>
+            <p class="mt-1 text-xs font-bold tracking-widest text-base-content/60">${dateParts.month}</p>
+          </div>
+          <div class="min-w-0">
+            <p class="text-xs font-bold uppercase leading-5 tracking-wider text-base-content/55">${escapeHtml(dateParts.time)}</p>
+            <h3 class="card-title mt-1 text-xl leading-tight text-primary">${escapeHtml(event.name)}</h3>
+          </div>
         </div>
-        <h3 class="card-title text-xl text-primary">${escapeHtml(event.name)}</h3>
-        <p class="line-clamp-3 text-sm leading-6 text-base-content/65">${escapeHtml(event.description)}</p>
+        <div class="border-t border-dashed border-base-content/25 pt-4">
+          <p class="line-clamp-3 text-sm leading-6 text-base-content/70">${escapeHtml(event.description)}</p>
+        </div>
       </div>
     </article>
   `;
@@ -80,6 +97,24 @@ const fetchEvents = async () => {
   return data ?? [];
 };
 
+const revealEvents = () => {
+  const revealCards = eventsContainer.querySelectorAll('.reveal-card');
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches || !('IntersectionObserver' in window)) {
+    revealCards.forEach((card) => card.classList.add('is-visible'));
+    return;
+  }
+
+  const observer = new IntersectionObserver((entries, currentObserver) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('is-visible');
+        currentObserver.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.12 });
+  revealCards.forEach((card) => observer.observe(card));
+};
+
 const renderEvents = async () => {
   try {
     const events = await fetchEvents();
@@ -88,6 +123,7 @@ const renderEvents = async () => {
       return;
     }
     eventsContainer.innerHTML = events.map(eventCard).join('');
+    revealEvents();
   } catch (error) {
     console.error('Unable to load upcoming events:', error);
     showMessage('Events are taking a quick break', 'We could not load the event list right now. Please try again shortly.', 'warning');

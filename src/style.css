@@ -2,18 +2,98 @@
 @tailwind components;
 @tailwind utilities;
 
-html {
-  scroll-behavior: smooth;
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    font-family: 'Inter', ui-sans-serif, system-ui, sans-serif;
+  }
 }
 
-body {
-  font-family: 'Inter', ui-sans-serif, system-ui, sans-serif;
+@layer utilities {
+  .font-display {
+    font-family: 'DM Serif Display', Georgia, serif;
+  }
+
+  .planner-paper {
+    background-image: repeating-linear-gradient(
+      to bottom,
+      transparent 0,
+      transparent 31px,
+      oklch(var(--bc) / 0.09) 32px
+    );
+  }
+
+  .planner-note::before {
+    position: absolute;
+    top: -13px;
+    left: 50%;
+    width: 72px;
+    height: 24px;
+    content: '';
+    background-color: oklch(var(--a) / 0.58);
+    transform: translateX(-50%) rotate(-2deg);
+  }
+
+  .nav-link {
+    text-decoration: underline;
+    text-decoration-color: oklch(var(--a) / 0.7);
+    text-decoration-thickness: 3px;
+    text-underline-offset: 5px;
+  }
+
+  .event-card {
+    transition: transform 180ms ease, box-shadow 180ms ease;
+  }
+
+  .reveal-card {
+    opacity: 0;
+    transform: translateY(14px) rotate(var(--card-rotation, 0deg));
+    transition: opacity 360ms ease var(--reveal-delay), transform 360ms ease var(--reveal-delay);
+  }
+
+  .reveal-card.is-visible {
+    opacity: 1;
+    transform: translateY(0) rotate(var(--card-rotation, 0deg));
+  }
+
+  .event-card:hover {
+    transform: translateY(-5px) rotate(0deg);
+  }
+
+  .event-card:nth-child(3n + 1) {
+    --card-rotation: -1deg;
+  }
+
+  .event-card:nth-child(3n) {
+    --card-rotation: 1deg;
+  }
+
+  .event-card:nth-child(3n + 2) {
+    margin-top: 1rem;
+  }
+
+  .event-card__date {
+    border-right: 2px dashed oklch(var(--bc) / 0.28);
+  }
+
+  .event-card__image {
+    filter: saturate(0.72) contrast(1.02);
+  }
 }
 
-.event-card {
-  transition: transform 180ms ease, box-shadow 180ms ease;
-}
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
 
-.event-card:hover {
-  transform: translateY(-4px);
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+  }
 }
