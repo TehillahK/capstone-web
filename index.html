@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en" data-theme="nord">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Upcoming events at Capstone Group 2 School." />
+    <title>Capstone Group 2 School | Events</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body class="min-h-screen bg-base-200 text-base-content">
+    <div class="relative isolate overflow-hidden">
+      <div class="pointer-events-none absolute inset-x-0 top-0 -z-10 h-[34rem] bg-primary/10"></div>
+
+      <header class="navbar mx-auto max-w-7xl px-6 py-5 lg:px-8">
+        <a class="flex items-center gap-3" href="/" aria-label="Capstone Group 2 School home">
+          <span class="grid size-11 place-items-center rounded-2xl bg-primary text-primary-content shadow-lg shadow-primary/20">
+            <svg viewBox="0 0 24 24" class="size-6" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+              <path d="m3 10 9-7 9 7" />
+              <path d="M5 9v10h14V9M3 19h18M9 19v-6h6v6" />
+            </svg>
+          </span>
+          <span>
+            <span class="block text-sm font-semibold uppercase tracking-[0.18em] text-primary">Capstone</span>
+            <span class="block text-lg font-extrabold leading-tight">Group 2 School</span>
+          </span>
+        </a>
+        <div class="ml-auto hidden items-center gap-8 text-sm font-medium text-base-content/70 md:flex">
+          <a class="transition-colors hover:text-primary" href="#events">Events</a>
+          <a class="transition-colors hover:text-primary" href="#about">About us</a>
+        </div>
+      </header>
+
+      <main>
+        <section id="about" class="mx-auto grid max-w-7xl gap-12 px-6 pb-20 pt-14 lg:grid-cols-[1.15fr_0.85fr] lg:items-center lg:px-8 lg:pb-28 lg:pt-20">
+          <div>
+            <div class="mb-6 inline-flex items-center gap-2 rounded-full bg-base-100 px-4 py-2 text-sm font-semibold text-primary shadow-sm ring-1 ring-base-300">
+              <span class="size-2 rounded-full bg-accent"></span>
+              Learn. Connect. Grow.
+            </div>
+            <h1 class="max-w-3xl text-5xl font-extrabold tracking-tight text-primary md:text-6xl lg:text-7xl">
+              Big ideas start in a welcoming place.
+            </h1>
+            <p class="mt-7 max-w-xl text-lg leading-8 text-base-content/70">
+              Discover what’s happening at Capstone Group 2 School. From classroom showcases to community celebrations, there’s always something to look forward to.
+            </p>
+            <a class="btn btn-primary mt-9 rounded-xl px-6 shadow-lg shadow-primary/20" href="#events">
+              Explore upcoming events
+              <svg viewBox="0 0 24 24" class="size-4" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
+                <path d="M5 12h14M13 6l6 6-6 6" />
+              </svg>
+            </a>
+          </div>
+          <div class="relative mx-auto w-full max-w-md">
+            <div class="absolute -inset-4 rounded-[2.5rem] bg-secondary/30 blur-2xl"></div>
+            <div class="relative overflow-hidden rounded-[2rem] bg-primary p-8 text-primary-content shadow-2xl">
+              <div class="flex items-start justify-between">
+                <span class="rounded-full bg-primary-content/15 px-3 py-1 text-xs font-bold uppercase tracking-wider">Our community</span>
+                <svg viewBox="0 0 24 24" class="size-7 text-accent" fill="currentColor" aria-hidden="true"><path d="M12 2.5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 12 2.5Zm0 17a7.5 7.5 0 1 1 7.5-7.5 7.51 7.51 0 0 1-7.5 7.5Z"/><path d="M12 7a1 1 0 0 0-1 1v3.59l-2.71 2.7a1 1 0 0 0 1.42 1.42l3-3A1 1 0 0 0 13 12V8a1 1 0 0 0-1-1Z"/></svg>
+              </div>
+              <p class="mt-16 text-4xl font-extrabold">Every day is<br /><span class="text-accent">an opportunity.</span></p>
+              <div class="mt-12 flex items-center gap-3 border-t border-primary-content/15 pt-5 text-sm text-primary-content/75">
+                <span class="grid size-9 place-items-center rounded-full bg-accent text-accent-content">✦</span>
+                <span>Growing curious minds together</span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section id="events" class="bg-base-100 px-6 py-20 lg:px-8 lg:py-24">
+          <div class="mx-auto max-w-7xl">
+            <div class="mb-12 flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
+              <div>
+                <p class="mb-3 text-sm font-bold uppercase tracking-[0.18em] text-secondary">Mark your calendar</p>
+                <h2 class="text-4xl font-extrabold tracking-tight text-primary md:text-5xl">Upcoming events</h2>
+              </div>
+              <p class="max-w-xs text-sm leading-6 text-base-content/60 sm:text-right">Stay in the loop with the moments that bring our school community together.</p>
+            </div>
+            <div id="events-container" class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3" aria-live="polite">
+              <div class="col-span-full flex min-h-48 items-center justify-center">
+                <span class="loading loading-spinner loading-lg text-primary" aria-label="Loading events"></span>
+              </div>
+            </div>
+          </div>
+        </section>
+      </main>
+
+      <footer class="footer items-center bg-base-200 px-6 py-8 text-base-content/60 lg:px-8">
+        <aside class="mx-auto flex w-full max-w-7xl items-center justify-between">
+          <p class="text-sm">© <span id="current-year"></span> Capstone Group 2 School</p>
+          <p class="text-sm">A place to learn and belong.</p>
+        </aside>
+      </footer>
+    </div>
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>
